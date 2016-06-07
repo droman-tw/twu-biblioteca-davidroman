@@ -15,4 +15,15 @@ public class Book {
         this.yearPublished = yearPublished;
     }
 
+    public boolean equals(Book book){
+        if(this.title == book.title && this.author == book.author && this.yearPublished == this.yearPublished){
+            return true;
+        }
+        return false;
+    }
+
+    public String printDetails(){
+        return this.title + ", " + this.author + ", " + this.yearPublished ;
+    }
+
 }
