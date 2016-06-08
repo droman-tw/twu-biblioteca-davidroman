@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,6 +20,7 @@ public class TestBiblioteca {
     private Book marquezBook;
     private Book matildaBook;
     private ArrayList<Book> library;
+    private HashSet<String> options;
 
     @Before
     public void setUp() {
@@ -30,12 +32,15 @@ public class TestBiblioteca {
         library.add(hobbitBook);
         library.add(marquezBook);
         library.add(matildaBook);
-        biblioteca = new BibliotecaApp(library);
+
+        options = new HashSet<String>();
+        options.add("List Books");
+
+        biblioteca = new BibliotecaApp(library, options);
     }
 
     @Test
     public void testWelcome(){
-        BibliotecaApp biblioteca = new BibliotecaApp(null);
         assertEquals("Welcome to the Bangalore Public Library!", biblioteca.welcome());
     }
 
@@ -65,21 +70,21 @@ public class TestBiblioteca {
     public void testListOneBook(){
         ArrayList<Book> books = new ArrayList<Book>();
         books.add(hobbitBook);
-        BibliotecaApp libraryOneBook = new BibliotecaApp(books);
-        String message = "Hobbit, JRR Tolkien, 1937\n";
+        BibliotecaApp libraryOneBook = new BibliotecaApp(books, options);
+        String expectedMessage = "Hobbit, JRR Tolkien, 1937\n";
 
-        assertEquals(message, libraryOneBook.listBooks());
+        assertEquals(expectedMessage, libraryOneBook.listBooks());
     }
 
 
     @Test
     public void testListVariousBooks(){
 
-        String message = "Hobbit, JRR Tolkien, 1937\n" +
+        String expectedMessage = "Hobbit, JRR Tolkien, 1937\n" +
                         "Relato de un Naufrago, Gabriel Garcia Marquez, 1970\n" +
                         "Matilda, Roal Dahl, 1988\n";
 
-        assertEquals(message, biblioteca.listBooks());
+        assertEquals(expectedMessage, biblioteca.listBooks());
     }
 
     @Test
@@ -89,7 +94,12 @@ public class TestBiblioteca {
 
     @Test
     public void testSelectingValidOption(){
-        assertTrue(BibliotecaApp.pickOption("List Books"));
+        assertTrue(biblioteca.validOption("List Books"));
+    }
+
+    @Test
+    public void testSelectingInvalidOption(){
+        assertFalse(biblioteca.validOption("Log Out"));
     }
 
 
