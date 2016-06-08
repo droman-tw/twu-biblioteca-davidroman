@@ -9,13 +9,13 @@ public class Book {
     public String title;
     public String author;
     public int yearPublished;
-    public Availability status;
+    //public Availability status;
 
     public Book(String title, String author, int yearPublished){
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
-        this.status = Availability.AVAILABLE;
+        //this.status = Availability.AVAILABLE;
     }
 
 
@@ -25,6 +25,9 @@ public class Book {
         Book bookToCompare = (Book) obj;
 
         if(bookToCompare == null){
+            if(this == null){
+                return true;
+            }
             return false;
         }
 
@@ -40,16 +43,11 @@ public class Book {
         return this.title + ", " + this.author + ", " + this.yearPublished ;
     }
 
-    public Availability getAvailability(){
-        return status;
+    @Override
+    public int hashCode() {
+        int result = title != null ? title.hashCode() : 0;
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + yearPublished;
+        return result;
     }
-
-
-    //This method changes the status of availability (AVAILABLE or UNAVAILABLE)
-    public void changeStatus(Availability newStatus){
-        this.status = newStatus;
-    }
-
-
-
 }

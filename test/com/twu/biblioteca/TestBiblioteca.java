@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,7 +21,7 @@ public class TestBiblioteca {
     private Book hobbitBook;
     private Book marquezBook;
     private Book matildaBook;
-    private ArrayList<Book> library;
+    private LinkedHashMap<Book, Availability> library;
     private HashMap<String, Option> options;
 
     @Before
@@ -29,10 +30,10 @@ public class TestBiblioteca {
         marquezBook = new Book("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
         matildaBook = new Book("Matilda", "Roal Dahl", 1988);
 
-        library = new ArrayList<Book>();
-        library.add(hobbitBook);
-        library.add(marquezBook);
-        library.add(matildaBook);
+        library = new LinkedHashMap<Book, Availability>();
+        library.put(hobbitBook, Availability.AVAILABLE);
+        library.put(marquezBook, Availability.AVAILABLE);
+        library.put(matildaBook, Availability.AVAILABLE);
 
         options = new HashMap<String, Option>();
 
@@ -79,10 +80,11 @@ public class TestBiblioteca {
 
     @Test
     public void testListOneBook(){
-        ArrayList<Book> books = new ArrayList<Book>();
-        books.add(hobbitBook);
+        LinkedHashMap<Book, Availability> books = new LinkedHashMap<Book, Availability>();
+        books.put(hobbitBook, Availability.AVAILABLE);
         BibliotecaApp libraryOneBook = new BibliotecaApp(books, options);
-        String expectedMessage = "Hobbit, JRR Tolkien, 1937\n";
+        String expectedMessage = "Title, Author, Year Published\n"+
+                                 "Hobbit, JRR Tolkien, 1937\n";
 
         String actualMessage = libraryOneBook.pickOption("List Books");
 
@@ -93,9 +95,34 @@ public class TestBiblioteca {
     @Test
     public void testListVariousBooks(){
 
-        String expectedMessage = "Hobbit, JRR Tolkien, 1937\n" +
-                        "Relato de un Naufrago, Gabriel Garcia Marquez, 1970\n" +
-                        "Matilda, Roal Dahl, 1988\n";
+        String expectedMessage = "Title, Author, Year Published\n" +
+                                 "Hobbit, JRR Tolkien, 1937\n" +
+                                 "Relato de un Naufrago, Gabriel Garcia Marquez, 1970\n" +
+                                 "Matilda, Roal Dahl, 1988\n";
+
+        String actualMessage = biblioteca.pickOption("List Books");
+
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void testBookIsInLibrary(){
+        assertTrue(biblioteca.isBookInLibrary(hobbitBook));
+    }
+
+    @Test
+    public void testNullBookIsInLibrary(){
+        assertFalse(biblioteca.isBookInLibrary(null));
+    }
+
+    @Test
+    public void testListOneBookUnavailable(){
+
+        String expectedMessage = "Title, Author, Year Published\n" +
+                                 "Relato de un Naufrago, Gabriel Garcia Marquez, 1970\n" +
+                                 "Matilda, Roal Dahl, 1988\n";
+
+        biblioteca.changeStatus(hobbitBook, Availability.UNAVAILABLE);
 
         String actualMessage = biblioteca.pickOption("List Books");
 
@@ -105,7 +132,7 @@ public class TestBiblioteca {
 
     @Test
     public void testViewMenu(){
-        assertEquals("List Books", biblioteca.viewMenu());
+        assertEquals("List Books\n", biblioteca.viewMenu());
     }
 
     @Test
@@ -140,27 +167,35 @@ public class TestBiblioteca {
     }
 
     @Test
+    public void testAvailabilityOfBookNotInLibrary(){
+        assertFalse(biblioteca.isBookAvailable(new Book("Mafalda", "Guillermo Suarez", 1937)));
+
+    }
+
+    @Test
     public void testFindBook(){
-        Book targetBook = biblioteca.findBook("Hobbit", "JRR Tolkien", 1937);
+        Book targetBook = biblioteca.findBook(hobbitBook);
         assertEquals(hobbitBook, targetBook);
     }
 
     @Test
     public void testBookNotFound(){
-        Book targetBook = biblioteca.findBook("Mafalda", "Guillermo Suarez", 1937);
-        assertFalse(hobbitBook.equals(targetBook));
+        Book targetBook = biblioteca.findBook(new Book("Mafalda", "Guillermo Suarez", 1937));
+        assertEquals(null, targetBook);
     }
 
     @Test
     public void testChangeBookStatusToUnavailable(){
-        hobbitBook.changeStatus(Availability.UNAVAILABLE);
+        biblioteca.changeStatus(hobbitBook, Availability.UNAVAILABLE);
         assertFalse(biblioteca.isBookAvailable(hobbitBook));
     }
 
     @Test
     public void testCheckOutBookAvailable(){
         String expectedMessage = "Thank you! Enjoy the book!";
-        String resultOfCheckOut = biblioteca.checkOut("Hobbit", "JRR Tolkien", 1937);
+        String resultOfCheckOut = biblioteca.checkOut(hobbitBook);
+
+        //Assert ending result of the action
         assertEquals(expectedMessage, resultOfCheckOut);
 
         //This assertion is to make sure that the status of the object has changed succesfully
@@ -170,7 +205,7 @@ public class TestBiblioteca {
     @Test
     public void testCheckOutBookNotInLibrary(){
         String expectedMessage = "That book is not available";
-        String resultOfCheckOut = biblioteca.checkOut("Mafalda", "Guillermo Suarez", 1937);
+        String resultOfCheckOut = biblioteca.checkOut(new Book("Mafalda", "Guillermo Suarez", 1937));
         assertEquals(expectedMessage, resultOfCheckOut);
     }
 
@@ -178,13 +213,61 @@ public class TestBiblioteca {
     public void testCheckOutBookNotAvailable(){
         String expectedMessage = "That book is not available";
 
-        //Change the status of a bookç
-        marquezBook.changeStatus(Availability.UNAVAILABLE);
+        //Change the status of a book
+        biblioteca.changeStatus(marquezBook, Availability.UNAVAILABLE);
 
-        String resultOfCheckOut = biblioteca.checkOut("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
+        String resultOfCheckOut = biblioteca.checkOut(marquezBook);
 
         assertEquals(expectedMessage, resultOfCheckOut);
     }
+
+    @Test
+    public void testReturnBookSuccesfully(){
+        biblioteca.checkOut(hobbitBook);
+
+        String expectedResultReturn = "Thank you for returning the book";
+
+        String actualResultReturn = biblioteca.returnBook(hobbitBook);
+
+        //Assert the correct message
+        assertEquals(expectedResultReturn, actualResultReturn);
+
+        //Assert that hobbit has change its status from Available to Unavailable
+        assertTrue(biblioteca.isBookAvailable(hobbitBook));
+    }
+
+    @Test
+    public void testReturnBookUnsuccesfully(){
+
+        String expectedResultReturn = "That is not a valid book to return";
+
+        //Hobbit is Available by default. The return wont be possible
+        String actualResultReturn = biblioteca.returnBook(hobbitBook);
+
+        assertEquals(expectedResultReturn, actualResultReturn);
+    }
+
+    @Test
+    public void testReturnNullBook(){
+        String expectedResultReturn = "That is not a valid book to return";
+
+        //Hobbit is Available by default. The return wont be possible
+        String actualResultReturn = biblioteca.returnBook(null);
+
+        assertEquals(expectedResultReturn, actualResultReturn);
+    }
+
+    @Test
+    public void testReturnBookNotInLibrary(){
+        String expectedResultReturn = "That is not a valid book to return";
+
+        //Hobbit is Available by default. The return wont be possible
+        String actualResultReturn = biblioteca.returnBook(new Book("Mafalda", "Guillermo Suarez", 1937));
+
+        assertEquals(expectedResultReturn, actualResultReturn);
+    }
+
+
 
 
 
