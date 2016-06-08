@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +21,7 @@ public class TestBiblioteca {
     private Book marquezBook;
     private Book matildaBook;
     private ArrayList<Book> library;
-    private HashSet<String> options;
+    private HashMap<String, Option> options;
 
     @Before
     public void setUp() {
@@ -33,10 +34,14 @@ public class TestBiblioteca {
         library.add(marquezBook);
         library.add(matildaBook);
 
-        options = new HashSet<String>();
-        options.add("List Books");
+        options = new HashMap<String, Option>();
+
+        Option optionListBooks = new ListBooks();
+
+        options.put("List Books", optionListBooks);
 
         biblioteca = new BibliotecaApp(library, options);
+
     }
 
     @Test
@@ -62,6 +67,12 @@ public class TestBiblioteca {
     }
 
     @Test
+    public void testBookNullEquality(){
+        Book bookNull = null;
+        assertFalse(hobbitBook.equals(bookNull));
+    }
+
+    @Test
     public void testPrintDetails(){
         assertEquals("Hobbit, JRR Tolkien, 1937", hobbitBook.printDetails());
     }
@@ -73,7 +84,9 @@ public class TestBiblioteca {
         BibliotecaApp libraryOneBook = new BibliotecaApp(books, options);
         String expectedMessage = "Hobbit, JRR Tolkien, 1937\n";
 
-        assertEquals(expectedMessage, libraryOneBook.listBooks());
+        String actualMessage = libraryOneBook.pickOption("List Books");
+
+        assertEquals(expectedMessage, actualMessage);
     }
 
 
@@ -84,8 +97,11 @@ public class TestBiblioteca {
                         "Relato de un Naufrago, Gabriel Garcia Marquez, 1970\n" +
                         "Matilda, Roal Dahl, 1988\n";
 
-        assertEquals(expectedMessage, biblioteca.listBooks());
+        String actualMessage = biblioteca.pickOption("List Books");
+
+        assertEquals(expectedMessage, actualMessage);
     }
+
 
     @Test
     public void testViewMenu(){
@@ -100,6 +116,42 @@ public class TestBiblioteca {
     @Test
     public void testSelectingInvalidOption(){
         assertFalse(biblioteca.validOption("Log Out"));
+    }
+
+    //This method tests the result that the program would give in case
+    //the user picked an invalid option.
+    @Test
+    public void testActionInvalidOption(){
+        String expectedMessage = "Select a valid option!";
+
+        String actualMessage =  biblioteca.pickOption("Add a Book");
+
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void testCheckingBookAvailability(){
+        assertTrue(biblioteca.isBookAvailable(hobbitBook));
+    }
+
+    @Test
+    public void testFindBook(){
+        Book targetBook = biblioteca.findBook("Hobbit", "JRR Tolkien", 1937);
+        assertEquals(hobbitBook, targetBook);
+    }
+
+    @Test
+    public void testBookNotFound(){
+        Book targetBook = biblioteca.findBook("Mafalda", "Guillermo Suarez", 1937);
+        assertFalse(hobbitBook.equals(targetBook));
+    }
+
+    @Test
+    public void testChangeBookStatusToUnavailable(){
+
+        hobbitBook.changeStatus("unavailable");
+        assertFalse(biblioteca.isBookAvailable(hobbitBook));
+
     }
 
 

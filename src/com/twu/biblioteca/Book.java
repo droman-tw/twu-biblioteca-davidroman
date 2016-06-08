@@ -8,22 +8,45 @@ public class Book {
     public String title;
     public String author;
     public int yearPublished;
+    public String status;
 
     public Book(String title, String author, int yearPublished){
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
+        this.status = "available";
     }
 
-    public boolean equals(Book book){
-        if(this.title == book.title && this.author == book.author && this.yearPublished == this.yearPublished){
+
+    @Override
+    public boolean equals(Object obj){
+
+        Book bookToCompare = (Book) obj;
+
+        if(bookToCompare == null){
+            return false;
+        }
+
+        if(this.title == bookToCompare.title && this.author == bookToCompare.author
+                && this.yearPublished == bookToCompare.yearPublished){
             return true;
         }
         return false;
     }
 
+
     public String printDetails(){
         return this.title + ", " + this.author + ", " + this.yearPublished ;
+    }
+
+    public String getAvailability(){
+        return status;
+    }
+
+
+    //This method changes the status of availability (AVAILABLE or UNAVAILABLE)
+    public void changeStatus(String availability){
+        this.status = availability;
     }
 
 
