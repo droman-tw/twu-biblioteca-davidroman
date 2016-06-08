@@ -135,6 +135,11 @@ public class TestBiblioteca {
     }
 
     @Test
+    public void testChekingNullBookAvailability(){
+        assertFalse(biblioteca.isBookAvailable(null));
+    }
+
+    @Test
     public void testFindBook(){
         Book targetBook = biblioteca.findBook("Hobbit", "JRR Tolkien", 1937);
         assertEquals(hobbitBook, targetBook);
@@ -148,11 +153,39 @@ public class TestBiblioteca {
 
     @Test
     public void testChangeBookStatusToUnavailable(){
-
-        hobbitBook.changeStatus("unavailable");
+        hobbitBook.changeStatus(Availability.UNAVAILABLE);
         assertFalse(biblioteca.isBookAvailable(hobbitBook));
-
     }
+
+    @Test
+    public void testCheckOutBookAvailable(){
+        String expectedMessage = "Thank you! Enjoy the book!";
+        String resultOfCheckOut = biblioteca.checkOut("Hobbit", "JRR Tolkien", 1937);
+        assertEquals(expectedMessage, resultOfCheckOut);
+
+        //This assertion is to make sure that the status of the object has changed succesfully
+        assertFalse(biblioteca.isBookAvailable(hobbitBook));
+    }
+
+    @Test
+    public void testCheckOutBookNotInLibrary(){
+        String expectedMessage = "That book is not available";
+        String resultOfCheckOut = biblioteca.checkOut("Mafalda", "Guillermo Suarez", 1937);
+        assertEquals(expectedMessage, resultOfCheckOut);
+    }
+
+    @Test
+    public void testCheckOutBookNotAvailable(){
+        String expectedMessage = "That book is not available";
+
+        //Change the status of a bookç
+        marquezBook.changeStatus(Availability.UNAVAILABLE);
+
+        String resultOfCheckOut = biblioteca.checkOut("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
+
+        assertEquals(expectedMessage, resultOfCheckOut);
+    }
+
 
 
 

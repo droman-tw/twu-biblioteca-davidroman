@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+
 /**
  * Created by droman on 6/6/16.
  */
@@ -8,13 +9,13 @@ public class Book {
     public String title;
     public String author;
     public int yearPublished;
-    public String status;
+    public Availability status;
 
     public Book(String title, String author, int yearPublished){
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
-        this.status = "available";
+        this.status = Availability.AVAILABLE;
     }
 
 
@@ -39,14 +40,14 @@ public class Book {
         return this.title + ", " + this.author + ", " + this.yearPublished ;
     }
 
-    public String getAvailability(){
+    public Availability getAvailability(){
         return status;
     }
 
 
     //This method changes the status of availability (AVAILABLE or UNAVAILABLE)
-    public void changeStatus(String availability){
-        this.status = availability;
+    public void changeStatus(Availability newStatus){
+        this.status = newStatus;
     }
 
 

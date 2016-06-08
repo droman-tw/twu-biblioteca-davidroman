@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class BibliotecaApp {
 
     private String welcomeMessage = "Welcome to the Bangalore Public Library!";
@@ -45,14 +46,17 @@ public class BibliotecaApp {
     }
 
     public Boolean isBookAvailable(Book book){
-        String availability = book.getAvailability();
-        if(availability.equals("available")){
+
+        if(book == null){
+            return false;
+        }
+
+        Availability status = book.getAvailability();
+        if(status == Availability.AVAILABLE){
             return true;
         }
         return false;
     }
-
-
 
     public Book findBook(String title, String author, int yearPublished){
         Book bookToFind = new Book(title, author, yearPublished);
@@ -67,6 +71,19 @@ public class BibliotecaApp {
         return null;
     }
 
+    public String checkOut(String title, String author, int yearPublished){
+
+        //Find the book
+        Book bookToCheckout = findBook(title, author, yearPublished);
+
+        if(isBookAvailable(bookToCheckout)){
+            bookToCheckout.changeStatus(Availability.UNAVAILABLE);
+            return "Thank you! Enjoy the book!";
+        }
+
+        return "That book is not available";
+
+    }
     public static void main(String[] args) {
         System.out.println("Hello, world!");
     }
