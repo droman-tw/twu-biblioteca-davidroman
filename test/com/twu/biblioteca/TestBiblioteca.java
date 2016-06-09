@@ -3,10 +3,7 @@ package com.twu.biblioteca;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -47,7 +44,7 @@ public class TestBiblioteca {
 
     @Test
     public void testWelcome(){
-        assertEquals("Welcome to the Bangalore Public Library!", biblioteca.welcome());
+        assertEquals("Welcome to the Online Bangalore Public Library!", biblioteca.welcome());
     }
 
     @Test
@@ -145,8 +142,7 @@ public class TestBiblioteca {
         assertFalse(biblioteca.validOption("Log Out"));
     }
 
-    //This method tests the result that the program would give in case
-    //the user picked an invalid option.
+
     @Test
     public void testActionInvalidOption(){
         String expectedMessage = "Select a valid option!";
@@ -213,7 +209,7 @@ public class TestBiblioteca {
     public void testCheckOutBookNotAvailable(){
         String expectedMessage = "That book is not available";
 
-        //Change the status of a book
+        //Change the status of a book to prepare test
         biblioteca.changeStatus(marquezBook, Availability.UNAVAILABLE);
 
         String resultOfCheckOut = biblioteca.checkOut(marquezBook);
@@ -266,9 +262,6 @@ public class TestBiblioteca {
 
         assertEquals(expectedResultReturn, actualResultReturn);
     }
-
-
-
 
 
 

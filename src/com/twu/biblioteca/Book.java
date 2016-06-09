@@ -9,13 +9,11 @@ public class Book {
     public String title;
     public String author;
     public int yearPublished;
-    //public Availability status;
 
     public Book(String title, String author, int yearPublished){
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
-        //this.status = Availability.AVAILABLE;
     }
 
 
@@ -31,7 +29,7 @@ public class Book {
             return false;
         }
 
-        if(this.title == bookToCompare.title && this.author == bookToCompare.author
+        if((this.title).equals(bookToCompare.title) && (this.author).equals(bookToCompare.author)
                 && this.yearPublished == bookToCompare.yearPublished){
             return true;
         }
