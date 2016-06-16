@@ -38,7 +38,7 @@ public class TestApplication {
 
         options = new HashMap<String, Option>();
 
-        Option optionListBooks = new ListBooks();
+        Option optionListBooks = new ListBooksOption();
         Option optionGetUserDetails = new UserDetailsOption();
 
         options.put("List Books", optionListBooks);

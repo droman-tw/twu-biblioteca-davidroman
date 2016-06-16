@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by droman on 6/7/16.
  */
-public class ListBooks implements Option {
+public class ListBooksOption implements Option {
 
     public String executeOption(Application application){
         Library library = application.getLibrary();

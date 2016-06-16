@@ -60,8 +60,8 @@ public class Application {
 
     public static HashMap<String, Option> setUpOptions(){
         HashMap<String, Option> options = new HashMap<String, Option>();
-        ListBooks optionListBooks = new ListBooks();
-        options.put("List Books", optionListBooks);
+        ListBooksOption optionListBooksOption = new ListBooksOption();
+        options.put("List Books", optionListBooksOption);
 
         return options;
     }
