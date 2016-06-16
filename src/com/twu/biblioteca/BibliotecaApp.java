@@ -2,9 +2,6 @@ package com.twu.biblioteca;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-
-
 public class BibliotecaApp {
 
     private String welcomeMessage = "Welcome to the Online Bangalore Public Library!";
@@ -67,9 +64,9 @@ public class BibliotecaApp {
         return options;
     }
 
+    /*
     public static Library setUpLibrary(LinkedHashMap<Book, Availability> listBooks){
-        Library library = new Library(listBooks);
-        return library;
+        return new Library(listBooks);
     }
 
     public void renderMenuPresentation(){
@@ -152,13 +149,15 @@ public class BibliotecaApp {
         System.exit(0);
     }
 
-
+*/
 
     public static void main(String[] args) {
 
+        /*
         BibliotecaApp application = new BibliotecaApp(setUpOptions(), setUpLibrary(setUpExampleBooks()));
         Scanner scan = new Scanner(System.in);
         application.executeApplication(scan);
+        */
     }
 
 }

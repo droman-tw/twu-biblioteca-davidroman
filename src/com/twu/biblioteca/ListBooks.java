@@ -9,7 +9,9 @@ import java.util.Set;
  */
 public class ListBooks implements Option {
 
-    public String executeOption(Library library){
+    public String executeOption(Object object){
+        Library library = (Library) object;
+
         String message = "Title, Author, Year Published\n";
         Set<Book> books = library.getBooks().keySet();
 

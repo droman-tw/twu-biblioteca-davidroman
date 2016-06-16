@@ -15,13 +15,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestLibrary {
 
-    private BibliotecaApp biblioteca;
     private Library library;
     private Book hobbitBook;
     private Book marquezBook;
     private Book matildaBook;
     private LinkedHashMap<Book, Availability> listBooks;
-    private HashMap<String, Option> options;
+    private HashMap<String, User> users;
 
     @Before
     public void setUp() {
@@ -34,16 +33,23 @@ public class TestLibrary {
         listBooks.put(marquezBook, Availability.AVAILABLE);
         listBooks.put(matildaBook, Availability.AVAILABLE);
 
-        options = new HashMap<String, Option>();
+        PersonInfo davidInfo = new PersonInfo("David Roman", "droman@thoughtworks.com", "0939053446");
 
-        Option optionListBooks = new ListBooks();
+        User david = new User(davidInfo, "111-1111", "biblioteca1");
 
-        options.put("List Books", optionListBooks);
+        PersonInfo larryInfo = new PersonInfo("Larry Roman", "lroman@gmail.com", "0999353546");
 
-        library = new Library(listBooks);
+        User larry = new User(larryInfo, "222-2222", "biblioteca2");
 
-        biblioteca = new BibliotecaApp(options, library);
+        users = new HashMap<String, User>();
+
+        users.put(david.getUserID(), david);
+
+        users.put(larry.getUserID(), larry);
+
+        library = new Library(listBooks, users);
     }
+
 
     @Test
     public void shouldTestIfBookIsInLibrary(){
@@ -89,10 +95,8 @@ public class TestLibrary {
         String expectedMessage = "Thank you! Enjoy the book!";
         String resultOfCheckOut = library.checkOut(hobbitBook);
 
-        //Assert ending result of the action
         assertEquals(expectedMessage, resultOfCheckOut);
 
-        //This assertion is to make sure that the status of the object has changed succesfully
         assertFalse(library.isBookAvailable(hobbitBook));
     }
 
@@ -107,7 +111,6 @@ public class TestLibrary {
     public void shouldCheckOutBookNotAvailableUnsucessfully(){
         String expectedMessage = "That book is not available";
 
-        //Change the status of a book to prepare test
         library.changeStatus(marquezBook, Availability.UNAVAILABLE);
 
         String resultOfCheckOut = library.checkOut(marquezBook);
@@ -123,10 +126,8 @@ public class TestLibrary {
 
         String actualResultReturn = library.returnBook(hobbitBook);
 
-        //Assert the correct message
         assertEquals(expectedResultReturn, actualResultReturn);
 
-        //Assert that hobbit has change its status from Available to Unavailable
         assertTrue(library.isBookAvailable(hobbitBook));
     }
 
@@ -135,7 +136,6 @@ public class TestLibrary {
 
         String expectedResultReturn = "That is not a valid book to return";
 
-        //Hobbit is Available by default. The return wont be possible
         String actualResultReturn = library.returnBook(hobbitBook);
 
         assertEquals(expectedResultReturn, actualResultReturn);
@@ -147,14 +147,10 @@ public class TestLibrary {
     }
 
 
-
-
-
     @Test
     public void shouldReturnUnsuccessfullyNullBook(){
         String expectedResultReturn = "That is not a valid book to return";
 
-        //Hobbit is Available by default. The return wont be possible
         String actualResultReturn = library.returnBook(null);
 
         assertEquals(expectedResultReturn, actualResultReturn);

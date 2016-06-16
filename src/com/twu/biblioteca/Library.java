@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -8,15 +9,19 @@ import java.util.LinkedHashMap;
 public class Library {
 
     private LinkedHashMap<Book, Availability> books;
+    private HashMap<String, User> users;
 
-    public Library(LinkedHashMap<Book, Availability> books){
+
+    public Library(LinkedHashMap<Book, Availability> books, HashMap<String, User> users){
         this.books = books;
+        this.users = users;
     }
 
     public LinkedHashMap<Book, Availability> getBooks(){
 
         return books;
     }
+
 
     public Boolean isBookInLibrary(Book book){
         return books.containsKey(book);

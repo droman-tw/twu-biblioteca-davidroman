@@ -20,6 +20,7 @@ public class TestBiblioteca {
     private Book marquezBook;
     private Book matildaBook;
     private LinkedHashMap<Book, Availability> listBooks;
+    HashMap<String, User> users;
     private HashMap<String, Option> options;
 
     @Before
@@ -36,16 +37,30 @@ public class TestBiblioteca {
         options = new HashMap<String, Option>();
 
         Option optionListBooks = new ListBooks();
+        Option optionGetUserDetails = new UserDetailsOption();
 
         options.put("List Books", optionListBooks);
 
-        library = new Library(listBooks);
+        options.put("User Details", optionGetUserDetails);
+
+        PersonInfo davidInfo = new PersonInfo("David Roman", "droman@thoughtworks.com", "0939053446");
+
+        User david = new User(davidInfo, "111-1111", "biblioteca1");
+
+        PersonInfo larryInfo = new PersonInfo("Larry Roman", "lroman@gmail.com", "0999353546");
+
+        User larry = new User(larryInfo, "222-2222", "biblioteca2");
+
+        users = new HashMap<String, User>();
+
+        users.put(david.getUserID(), david);
+
+        users.put(larry.getUserID(), larry);
+
+
+        library = new Library(listBooks, users);
 
         application = new BibliotecaApp(options, library);
-
-
-
-
 
     }
 
@@ -60,7 +75,7 @@ public class TestBiblioteca {
 
         books.put(hobbitBook, Availability.AVAILABLE);
 
-        Library oneBook = new Library(books);
+        Library oneBook = new Library(books, users);
 
         BibliotecaApp libraryOneBook = new BibliotecaApp(options, oneBook);
         String expectedMessage = "Title, Author, Year Published\n"+
@@ -104,7 +119,7 @@ public class TestBiblioteca {
 
     @Test
     public void shouldPrintTheMenuOfOptions(){
-        assertEquals("List Books\n", application.viewMenu());
+        assertEquals("List Books\nUser Details\n", application.viewMenu());
     }
 
     @Test
@@ -125,6 +140,17 @@ public class TestBiblioteca {
         String actualMessage = application.pickOption("Add a Book");
 
         assertEquals(expectedMessage, actualMessage);
+    }
+
+
+    @Test
+    public void shouldExecuteOptionToPrintUserDetails(){
+        String expectedMessage = "Name: David Roman\n" +
+                "Email: droman@thoughtworks.com\n" +
+                "Phone: 0939053446\n" +
+                "User ID: 111-1111";
+
+        String actualMessage = application.pickOption("User Details");
     }
 
 }

@@ -16,6 +16,10 @@ public class Book {
         this.yearPublished = yearPublished;
     }
 
+    public Boolean areDetailsEqual(Book bookToCompare){
+        return (this.title).equals(bookToCompare.title) && (this.author).equals(bookToCompare.author)
+                && this.yearPublished == bookToCompare.yearPublished;
+    }
 
     @Override
     public boolean equals(Object obj){
@@ -23,17 +27,10 @@ public class Book {
         Book bookToCompare = (Book) obj;
 
         if(bookToCompare == null){
-            if(this == null){
-                return true;
-            }
             return false;
         }
 
-        if((this.title).equals(bookToCompare.title) && (this.author).equals(bookToCompare.author)
-                && this.yearPublished == bookToCompare.yearPublished){
-            return true;
-        }
-        return false;
+        return areDetailsEqual(bookToCompare);
     }
 
 
