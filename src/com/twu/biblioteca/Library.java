@@ -15,7 +15,7 @@ public class Library {
         this.items = items;
     }
 
-    public LinkedHashMap<Item, Availability> getBooks(){
+    public LinkedHashMap<Item, Availability> getItems(){
 
         return items;
     }

@@ -1,7 +1,5 @@
 package com.twu.biblioteca;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -13,11 +11,11 @@ public class ListBooks implements Option {
         Library library = application.getLibrary();
 
         String message = "Title, Author, Year Published\n";
-        Set<Item> books = library.getBooks().keySet();
+        Set<Item> items = library.getItems().keySet();
 
-        for(Item book: books){
-            if(library.isItemAvailable(book)){
-                message += book.printDetails() + "\n";
+        for(Item item: items){
+            if(library.isItemAvailable(item) && item instanceof Book){
+                message += item.printDetails() + "\n";
             }
         }
         return message;
