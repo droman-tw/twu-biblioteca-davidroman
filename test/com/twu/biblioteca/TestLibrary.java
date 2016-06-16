@@ -3,7 +3,6 @@ package com.twu.biblioteca;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +19,6 @@ public class TestLibrary {
     private Item marquezBook;
     private Item matildaBook;
     private LinkedHashMap<Item, Availability> listBooks;
-    //private HashMap<String, User> users;
 
     @Before
     public void setUp() {
@@ -32,21 +30,7 @@ public class TestLibrary {
         listBooks.put(hobbitBook, Availability.AVAILABLE);
         listBooks.put(marquezBook, Availability.AVAILABLE);
         listBooks.put(matildaBook, Availability.AVAILABLE);
-        /*
-        PersonInfo davidInfo = new PersonInfo("David Roman", "droman@thoughtworks.com", "0939053446");
 
-        User david = new User(davidInfo, "111-1111", "biblioteca1");
-
-        PersonInfo larryInfo = new PersonInfo("Larry Roman", "lroman@gmail.com", "0999353546");
-
-        User larry = new User(larryInfo, "222-2222", "biblioteca2");
-
-        users = new HashMap<String, User>();
-
-        users.put(david.getUserID(), david);
-
-        users.put(larry.getUserID(), larry);
-        */
 
         library = new Library(listBooks);
     }
