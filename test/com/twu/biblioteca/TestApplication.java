@@ -16,13 +16,22 @@ public class TestApplication {
 
     private Application application;
     private Library library;
+
     private Book hobbitBook;
     private Book marquezBook;
     private Book matildaBook;
+
+    private Movie schoolRock;
+    private Movie pulpFiction;
+    private Movie gladiator;
+
     private User david;
     private User larry;
-    private LinkedHashMap<Item, Availability> listBooks;
+
+    private LinkedHashMap<Item, Availability> listItems;
+
     HashMap<String, User> users;
+
     private HashMap<String, Option> options;
 
     @Before
@@ -31,17 +40,29 @@ public class TestApplication {
         marquezBook = new Book("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
         matildaBook = new Book("Matilda", "Roal Dahl", 1988);
 
-        listBooks = new LinkedHashMap<Item, Availability>();
-        listBooks.put(hobbitBook, Availability.AVAILABLE);
-        listBooks.put(marquezBook, Availability.AVAILABLE);
-        listBooks.put(matildaBook, Availability.AVAILABLE);
+        schoolRock = new Movie("School of Rock", 2003, "Richard Linklater", 0);
+        pulpFiction = new Movie("Pulp Fiction", 1994, "Quentin Tarantino", 10);
+        gladiator = new Movie("Gladiator", 2000, "Ridley Scott", 8);
+
+        listItems = new LinkedHashMap<Item, Availability>();
+
+        listItems.put(hobbitBook, Availability.AVAILABLE);
+        listItems.put(marquezBook, Availability.AVAILABLE);
+        listItems.put(matildaBook, Availability.AVAILABLE);
+
+        listItems.put(schoolRock, Availability.AVAILABLE);
+        listItems.put(pulpFiction, Availability.AVAILABLE);
+        listItems.put(gladiator, Availability.AVAILABLE);
 
         options = new HashMap<String, Option>();
 
         Option optionListBooks = new ListBooksOption();
+        Option optionListMovies = new ListMoviesOption();
         Option optionGetUserDetails = new UserDetailsOption();
 
         options.put("List Books", optionListBooks);
+
+        options.put("List Movies", optionListMovies);
 
         options.put("User Details", optionGetUserDetails);
 
@@ -60,7 +81,7 @@ public class TestApplication {
         users.put(larry.getUserID(), larry);
 
 
-        library = new Library(listBooks);
+        library = new Library(listItems);
 
         application = new Application(options, library, users);
 
@@ -79,11 +100,12 @@ public class TestApplication {
 
         Library oneBook = new Library(books);
 
-        Application libraryOneBook = new Application(options, oneBook, users);
+        Application applicationOneBook = new Application(options, oneBook, users);
+
         String expectedMessage = "Title, Author, Year Published\n"+
                                  "Hobbit, JRR Tolkien, 1937\n";
 
-        String actualMessage = libraryOneBook.pickOption("List Books");
+        String actualMessage = applicationOneBook.pickOption("List Books");
 
         assertEquals(expectedMessage, actualMessage);
     }
@@ -121,7 +143,7 @@ public class TestApplication {
 
     @Test
     public void shouldPrintTheMenuOfOptions(){
-        assertEquals("List Books\nUser Details\n", application.viewMenu());
+        assertEquals("List Books\nList Movies\nUser Details\n", application.viewMenu());
     }
 
     @Test
@@ -175,6 +197,38 @@ public class TestApplication {
         String actualMessage = application.pickOption("User Details");
 
         assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void shouldPrintListOfOneMovie(){
+        LinkedHashMap<Item, Availability> movies = new LinkedHashMap<Item, Availability>();
+
+        movies.put(pulpFiction, Availability.AVAILABLE);
+
+        Library oneMovie = new Library(movies);
+
+        Application applicationOneMovie = new Application(options, oneMovie, users);
+
+        String expectedMesage = "Name (Year), Director, Rating\n"+
+                                "Pulp Fiction (1994), Quentin Tarantino, 10 stars\n";
+
+        String actualMessage = applicationOneMovie.pickOption("List Movies");
+
+        assertEquals(expectedMesage, actualMessage);
+
+    }
+
+    @Test
+    public void shouldPrintListOfVariousMovies(){
+        String expectedMesage = "Name (Year), Director, Rating\n" +
+                                "School of Rock (2003), Richard Linklater, unrated\n" +
+                                "Pulp Fiction (1994), Quentin Tarantino, 10 stars\n" +
+                                "Gladiator (2000), Ridley Scott, 8 stars\n";
+
+        String actualMessage = application.pickOption("List Movies");
+
+        assertEquals(expectedMesage, actualMessage);
+
     }
 
 }
