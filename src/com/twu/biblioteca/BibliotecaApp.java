@@ -8,13 +8,13 @@ import static org.junit.Assert.assertEquals;
 public class BibliotecaApp {
 
     private String welcomeMessage = "Welcome to the Online Bangalore Public Library!";
-    private LinkedHashMap<Book, Availability> books;
     private HashMap<String, Option> options;
+    private Library library;
 
 
-    public BibliotecaApp(LinkedHashMap<Book, Availability> books, HashMap<String, Option> options){
-        this.books = books;
+    public BibliotecaApp(HashMap<String, Option> options, Library library){
         this.options = options;
+        this.library = library;
     }
 
     public String welcome(){
@@ -25,7 +25,7 @@ public class BibliotecaApp {
     public String pickOption(String optionName){
         if(validOption(optionName)) {
             Option option = options.get(optionName);
-            return option.executeOption(this);
+            return option.executeOption(library);
         }
         return "Select a valid option!";
     }
@@ -45,84 +45,11 @@ public class BibliotecaApp {
     }
 
     public Boolean validOption(String option){
+
         return options.containsKey(option);
     }
 
-    public LinkedHashMap<Book, Availability> getBooks(){
-        return books;
-    }
 
-    public Boolean isBookInLibrary(Book book){
-        return books.containsKey(book);
-    }
-
-    public Availability getAvailability(Book book){
-        //Check if the book is in the library
-        if(isBookInLibrary(book)){
-            //Return the availability status of the book
-            return books.get(book);
-        }
-        //If the book is not in the library return that is unavailable
-        return Availability.UNAVAILABLE;
-    }
-
-
-    //This method changes the status of availability (AVAILABLE or UNAVAILABLE)
-    public void changeStatus(Book book, Availability newStatus){
-        if(isBookInLibrary(book)){
-            books.put(book, newStatus);
-        }
-    }
-
-
-
-    public Boolean isBookAvailable(Book book){
-
-        if(isBookInLibrary(book)) {
-            Availability status = getAvailability(book);
-            if (status == Availability.AVAILABLE) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Book findBook(Book bookToFind){
-
-        if(isBookInLibrary(bookToFind)){
-            for(Book book : books.keySet()){
-                if(book.equals(bookToFind)){
-                    //Return the reference of the book in the list
-                    return book;
-                }
-            }
-        }
-        return null;
-    }
-
-    public String checkOut(Book bookToCheckout){
-
-        //Find the book. Gives me the reference of the book in the HashMap that is equal to the
-        //book passed
-        Book bookFound = findBook(bookToCheckout);
-
-        if(isBookAvailable(bookFound)){
-            changeStatus(bookToCheckout, Availability.UNAVAILABLE);
-            return "Thank you! Enjoy the book!";
-        }
-        return "That book is not available";
-    }
-
-    public String returnBook(Book book){
-        //Check that book is unavailable
-        if(!isBookAvailable(book) && isBookInLibrary(book)){
-            changeStatus(book, Availability.AVAILABLE);
-            return "Thank you for returning the book";
-        }
-
-        return "That is not a valid book to return";
-    }
 
     public static LinkedHashMap<Book, Availability> setUpExampleBooks(){
         LinkedHashMap<Book, Availability> books = new LinkedHashMap<Book, Availability>();
@@ -138,6 +65,11 @@ public class BibliotecaApp {
         options.put("List Books", optionListBooks);
 
         return options;
+    }
+
+    public static Library setUpLibrary(LinkedHashMap<Book, Availability> listBooks){
+        Library library = new Library(listBooks);
+        return library;
     }
 
     public void renderMenuPresentation(){
@@ -173,13 +105,16 @@ public class BibliotecaApp {
         return new Book(title, author, yearPublished);
     }
 
+
     public void checkoutOrReturnFromUser(String option, Book targetBook){
         if (option.equals("checkout")) {
-            System.out.println("\n"+checkOut(targetBook));
+            System.out.println("\n"+library.checkOut(targetBook));
         } else if (option.equals("return")) {
-            System.out.println("\n"+returnBook(targetBook));
+            System.out.println("\n"+library.returnBook(targetBook));
         }
     }
+
+
 
     public void executeCheckoutReturnOption(Scanner scan){
 
@@ -196,6 +131,8 @@ public class BibliotecaApp {
             option = scan.nextLine();
         }
     }
+
+
 
     public void executeApplication(Scanner scan){
 
@@ -216,12 +153,12 @@ public class BibliotecaApp {
     }
 
 
+
     public static void main(String[] args) {
 
-        BibliotecaApp biblioteca = new BibliotecaApp(setUpExampleBooks(), setUpOptions());
+        BibliotecaApp application = new BibliotecaApp(setUpOptions(), setUpLibrary(setUpExampleBooks()));
         Scanner scan = new Scanner(System.in);
-        biblioteca.executeApplication(scan);
-
+        application.executeApplication(scan);
     }
 
 }

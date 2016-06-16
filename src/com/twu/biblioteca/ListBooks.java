@@ -9,12 +9,12 @@ import java.util.Set;
  */
 public class ListBooks implements Option {
 
-    public String executeOption(BibliotecaApp biblioteca){
+    public String executeOption(Library library){
         String message = "Title, Author, Year Published\n";
-        Set<Book> books = biblioteca.getBooks().keySet();
+        Set<Book> books = library.getBooks().keySet();
 
         for(Book book: books){
-            if(biblioteca.isBookAvailable(book)){
+            if(library.isBookAvailable(book)){
                 message += book.printDetails() + "\n";
             }
         }
