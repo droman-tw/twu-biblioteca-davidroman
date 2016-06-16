@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestBiblioteca {
 
-    private BibliotecaApp application;
+    private Application application;
     private Library library;
     private Book hobbitBook;
     private Book marquezBook;
@@ -60,7 +60,7 @@ public class TestBiblioteca {
 
         library = new Library(listBooks, users);
 
-        application = new BibliotecaApp(options, library);
+        application = new Application(options, library);
 
     }
 
@@ -77,7 +77,7 @@ public class TestBiblioteca {
 
         Library oneBook = new Library(books, users);
 
-        BibliotecaApp libraryOneBook = new BibliotecaApp(options, oneBook);
+        Application libraryOneBook = new Application(options, oneBook);
         String expectedMessage = "Title, Author, Year Published\n"+
                                  "Hobbit, JRR Tolkien, 1937\n";
 

@@ -2,14 +2,14 @@ package com.twu.biblioteca;
 
 import java.util.*;
 
-public class BibliotecaApp {
+public class Application {
 
     private String welcomeMessage = "Welcome to the Online Bangalore Public Library!";
     private HashMap<String, Option> options;
     private Library library;
 
 
-    public BibliotecaApp(HashMap<String, Option> options, Library library){
+    public Application(HashMap<String, Option> options, Library library){
         this.options = options;
         this.library = library;
     }
@@ -154,7 +154,7 @@ public class BibliotecaApp {
     public static void main(String[] args) {
 
         /*
-        BibliotecaApp application = new BibliotecaApp(setUpOptions(), setUpLibrary(setUpExampleBooks()));
+        Application application = new Application(setUpOptions(), setUpLibrary(setUpExampleBooks()));
         Scanner scan = new Scanner(System.in);
         application.executeApplication(scan);
         */
