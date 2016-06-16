@@ -4,7 +4,7 @@ package com.twu.biblioteca;
 /**
  * Created by droman on 6/6/16.
  */
-public class Book {
+public class Book implements Item{
 
     public String title;
     public String author;
@@ -24,11 +24,12 @@ public class Book {
     @Override
     public boolean equals(Object obj){
 
-        Book bookToCompare = (Book) obj;
-
-        if(bookToCompare == null){
+        if(!(obj instanceof Book) || obj == null){
             return false;
         }
+
+        Book bookToCompare = (Book) obj;
+
 
         return areDetailsEqual(bookToCompare);
     }

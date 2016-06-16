@@ -16,10 +16,10 @@ import static org.junit.Assert.assertTrue;
 public class TestLibrary {
 
     private Library library;
-    private Book hobbitBook;
-    private Book marquezBook;
-    private Book matildaBook;
-    private LinkedHashMap<Book, Availability> listBooks;
+    private Item hobbitBook;
+    private Item marquezBook;
+    private Item matildaBook;
+    private LinkedHashMap<Item, Availability> listBooks;
     //private HashMap<String, User> users;
 
     @Before
@@ -28,7 +28,7 @@ public class TestLibrary {
         marquezBook = new Book("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
         matildaBook = new Book("Matilda", "Roal Dahl", 1988);
 
-        listBooks = new LinkedHashMap<Book, Availability>();
+        listBooks = new LinkedHashMap<Item, Availability>();
         listBooks.put(hobbitBook, Availability.AVAILABLE);
         listBooks.put(marquezBook, Availability.AVAILABLE);
         listBooks.put(matildaBook, Availability.AVAILABLE);
@@ -54,41 +54,41 @@ public class TestLibrary {
 
     @Test
     public void shouldTestIfBookIsInLibrary(){
-        assertTrue(library.isBookInLibrary(hobbitBook));
+        assertTrue(library.isItemInLibrary(hobbitBook));
     }
 
     @Test
     public void shouldTestThatNullBookIsNotInLibrary(){
-        assertFalse(library.isBookInLibrary(null));
+        assertFalse(library.isItemInLibrary(null));
     }
 
     @Test
     public void shouldTestNullBookIsNotAvailable(){
-        assertFalse(library.isBookAvailable(null));
+        assertFalse(library.isItemAvailable(null));
     }
 
     @Test
     public void shouldTestBookNotInLibraryIsNotAvailable(){
-        assertFalse(library.isBookAvailable(new Book("Mafalda", "Guillermo Suarez", 1937)));
+        assertFalse(library.isItemAvailable(new Book("Mafalda", "Guillermo Suarez", 1937)));
 
     }
 
     @Test
     public void shouldTestBookFound(){
-        Book targetBook = library.findBook(hobbitBook);
+        Item targetBook = library.findItem(hobbitBook);
         assertEquals(hobbitBook, targetBook);
     }
 
     @Test
     public void shouldTestBookNotFound(){
-        Book targetBook = library.findBook(new Book("Mafalda", "Guillermo Suarez", 1937));
+        Item targetBook = library.findItem(new Book("Mafalda", "Guillermo Suarez", 1937));
         assertEquals(null, targetBook);
     }
 
     @Test
     public void shouldChangeOfBookStatusToUnavailable(){
         library.changeStatus(hobbitBook, Availability.UNAVAILABLE);
-        assertFalse(library.isBookAvailable(hobbitBook));
+        assertFalse(library.isItemAvailable(hobbitBook));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class TestLibrary {
 
         assertEquals(expectedMessage, resultOfCheckOut);
 
-        assertFalse(library.isBookAvailable(hobbitBook));
+        assertFalse(library.isItemAvailable(hobbitBook));
     }
 
     @Test
@@ -125,11 +125,11 @@ public class TestLibrary {
 
         String expectedResultReturn = "Thank you for returning the book";
 
-        String actualResultReturn = library.returnBook(hobbitBook);
+        String actualResultReturn = library.returnItem(hobbitBook);
 
         assertEquals(expectedResultReturn, actualResultReturn);
 
-        assertTrue(library.isBookAvailable(hobbitBook));
+        assertTrue(library.isItemAvailable(hobbitBook));
     }
 
     @Test
@@ -137,14 +137,14 @@ public class TestLibrary {
 
         String expectedResultReturn = "That is not a valid book to return";
 
-        String actualResultReturn = library.returnBook(hobbitBook);
+        String actualResultReturn = library.returnItem(hobbitBook);
 
         assertEquals(expectedResultReturn, actualResultReturn);
     }
 
     @Test
     public void shouldTestBookIsAvailable(){
-        assertTrue(library.isBookAvailable(hobbitBook));
+        assertTrue(library.isItemAvailable(hobbitBook));
     }
 
 
@@ -152,7 +152,7 @@ public class TestLibrary {
     public void shouldReturnUnsuccessfullyNullBook(){
         String expectedResultReturn = "That is not a valid book to return";
 
-        String actualResultReturn = library.returnBook(null);
+        String actualResultReturn = library.returnItem(null);
 
         assertEquals(expectedResultReturn, actualResultReturn);
     }
@@ -161,7 +161,7 @@ public class TestLibrary {
     public void shouldReturnUnsuccessfullyBookNotInLibrary(){
         String expectedResultReturn = "That is not a valid book to return";
 
-        String actualResultReturn = library.returnBook(new Book("Mafalda", "Guillermo Suarez", 1937));
+        String actualResultReturn = library.returnItem(new Book("Mafalda", "Guillermo Suarez", 1937));
 
         assertEquals(expectedResultReturn, actualResultReturn);
     }

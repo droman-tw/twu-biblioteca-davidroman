@@ -13,10 +13,10 @@ public class ListBooks implements Option {
         Library library = application.getLibrary();
 
         String message = "Title, Author, Year Published\n";
-        Set<Book> books = library.getBooks().keySet();
+        Set<Item> books = library.getBooks().keySet();
 
-        for(Book book: books){
-            if(library.isBookAvailable(book)){
+        for(Item book: books){
+            if(library.isItemAvailable(book)){
                 message += book.printDetails() + "\n";
             }
         }

@@ -12,8 +12,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestBook {
 
-    private Book hobbitBook;
-    private Book marquezBook;
+    private Item hobbitBook;
+    private Item marquezBook;
 
     @Before
     public void setUp() {
@@ -36,6 +36,11 @@ public class TestBook {
     public void shouldTestIfTwoBooksAreEqual(){
         assertTrue(hobbitBook.equals(new Book("Hobbit", "JRR Tolkien", 1937)));
         assertFalse(hobbitBook.equals(new Book("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970)));
+    }
+
+    @Test
+    public void shouldTestInequalityWhenComparedToOtherObject(){
+        assertFalse(hobbitBook.equals("hello"));
     }
 
     @Test

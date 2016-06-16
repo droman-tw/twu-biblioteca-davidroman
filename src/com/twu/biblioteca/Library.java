@@ -8,41 +8,41 @@ import java.util.LinkedHashMap;
  */
 public class Library {
 
-    private LinkedHashMap<Book, Availability> books;
+    private LinkedHashMap<Item, Availability> items;
 
 
-    public Library(LinkedHashMap<Book, Availability> books){
-        this.books = books;
+    public Library(LinkedHashMap<Item, Availability> items){
+        this.items = items;
     }
 
-    public LinkedHashMap<Book, Availability> getBooks(){
+    public LinkedHashMap<Item, Availability> getBooks(){
 
-        return books;
-    }
-
-
-    public Boolean isBookInLibrary(Book book){
-        return books.containsKey(book);
+        return items;
     }
 
 
-    public Availability getAvailability(Book book){
-        if(isBookInLibrary(book)){
-            return books.get(book);
+    public Boolean isItemInLibrary(Item item){
+        return items.containsKey(item);
+    }
+
+
+    public Availability getAvailability(Item item){
+        if(isItemInLibrary(item)){
+            return items.get(item);
         }
         return Availability.UNAVAILABLE;
     }
 
-    public void changeStatus(Book book, Availability newStatus){
-        if(isBookInLibrary(book)){
-            books.put(book, newStatus);
+    public void changeStatus(Item item, Availability newStatus){
+        if(isItemInLibrary(item)){
+            items.put(item, newStatus);
         }
     }
 
-    public Boolean isBookAvailable(Book book){
+    public Boolean isItemAvailable(Item item){
 
-        if(isBookInLibrary(book)) {
-            Availability status = getAvailability(book);
+        if(isItemInLibrary(item)) {
+            Availability status = getAvailability(item);
             if (status == Availability.AVAILABLE) {
                 return true;
             }
@@ -51,32 +51,32 @@ public class Library {
         return false;
     }
 
-    public Book findBook(Book bookToFind){
+    public Item findItem(Item itemToFind){
 
-        if(isBookInLibrary(bookToFind)){
-            for(Book book : books.keySet()){
-                if(book.equals(bookToFind)){
-                    return book;
+        if(isItemInLibrary(itemToFind)){
+            for(Item item : items.keySet()){
+                if(item.equals(itemToFind)){
+                    return item;
                 }
             }
         }
         return null;
     }
 
-    public String checkOut(Book bookToCheckout){
+    public String checkOut(Item itemToCheckout){
 
-        Book bookFound = findBook(bookToCheckout);
+        Item itemFound = findItem(itemToCheckout);
 
-        if(isBookAvailable(bookFound)){
-            changeStatus(bookToCheckout, Availability.UNAVAILABLE);
+        if(isItemAvailable(itemFound)){
+            changeStatus(itemToCheckout, Availability.UNAVAILABLE);
             return "Thank you! Enjoy the book!";
         }
         return "That book is not available";
     }
 
-    public String returnBook(Book book){
-        if(!isBookAvailable(book) && isBookInLibrary(book)){
-            changeStatus(book, Availability.AVAILABLE);
+    public String returnItem(Item item){
+        if(!isItemAvailable(item) && isItemInLibrary(item)){
+            changeStatus(item, Availability.AVAILABLE);
             return "Thank you for returning the book";
         }
 

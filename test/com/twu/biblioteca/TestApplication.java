@@ -21,7 +21,7 @@ public class TestApplication {
     private Book matildaBook;
     private User david;
     private User larry;
-    private LinkedHashMap<Book, Availability> listBooks;
+    private LinkedHashMap<Item, Availability> listBooks;
     HashMap<String, User> users;
     private HashMap<String, Option> options;
 
@@ -31,7 +31,7 @@ public class TestApplication {
         marquezBook = new Book("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
         matildaBook = new Book("Matilda", "Roal Dahl", 1988);
 
-        listBooks = new LinkedHashMap<Book, Availability>();
+        listBooks = new LinkedHashMap<Item, Availability>();
         listBooks.put(hobbitBook, Availability.AVAILABLE);
         listBooks.put(marquezBook, Availability.AVAILABLE);
         listBooks.put(matildaBook, Availability.AVAILABLE);
@@ -73,7 +73,7 @@ public class TestApplication {
 
     @Test
     public void shouldPrintListOfOneBook(){
-        LinkedHashMap<Book, Availability> books = new LinkedHashMap<Book, Availability>();
+        LinkedHashMap<Item, Availability> books = new LinkedHashMap<Item, Availability>();
 
         books.put(hobbitBook, Availability.AVAILABLE);
 
@@ -176,5 +176,5 @@ public class TestApplication {
 
         assertEquals(expectedMessage, actualMessage);
     }
-    
+
 }
