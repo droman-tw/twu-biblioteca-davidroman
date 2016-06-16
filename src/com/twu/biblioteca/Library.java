@@ -9,12 +9,10 @@ import java.util.LinkedHashMap;
 public class Library {
 
     private LinkedHashMap<Book, Availability> books;
-    private HashMap<String, User> users;
 
 
-    public Library(LinkedHashMap<Book, Availability> books, HashMap<String, User> users){
+    public Library(LinkedHashMap<Book, Availability> books){
         this.books = books;
-        this.users = users;
     }
 
     public LinkedHashMap<Book, Availability> getBooks(){

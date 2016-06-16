@@ -32,11 +32,11 @@ public class TestUser {
     }
 
     @Test
-    public void shouldPrintUserDetails(){
+    public void shouldPrintUserDetails() {
         String expectedMessage = "Name: David Roman\n" +
                                  "Email: droman@thoughtworks.com\n" +
                                  "Phone: 0939053446\n" +
-                                 "User ID: 111-1111";
+                                 "User ID: 111-1111\n";
 
         String actualMessage = david.printUserDetails();
 
@@ -56,5 +56,15 @@ public class TestUser {
     @Test
     public void shouldTestNullPassword(){
         assertFalse(david.checkPassword("bascasliotsdfs"));
+    }
+
+    @Test
+    public void shouldUsersBeEqual() {
+        assertTrue(david.equals(new User(davidInfo, "111-1111", "biblioteca1")));
+    }
+
+    @Test
+    public void shouldUsersNotBeEqual() {
+        assertFalse(david.equals(new User(davidInfo, "121-1122", "biblioteca1")));;
     }
 }

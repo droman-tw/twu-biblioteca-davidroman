@@ -31,12 +31,33 @@ public class User {
 
     public String printUserDetails(){
         String userDetails = this.personalInformation.printPersonalInformation();
-        userDetails += "User ID: "+this.userID;
+        userDetails += "User ID: "+this.userID + "\n";
         return userDetails;
     }
 
-    public Boolean checkPassword(String possiblePassword){
+    public boolean checkPassword(String possiblePassword){
         return password.equals(possiblePassword);
+    }
+
+    public boolean isPersonalInfoOfUsersEqual(User userCompared){
+        return (this.personalInformation).equals(userCompared.personalInformation);
+    }
+
+    public boolean isUserIDEqual(User userCompared){
+        return (this.userID).equals(userCompared.userID);
+    }
+
+    public boolean isPasswordEqual(User userCompared) {
+        return (this.password).equals(userCompared.password);
+    }
+
+
+    @Override
+    public boolean equals(Object object){
+        User userCompared = (User) object;
+
+        return isPersonalInfoOfUsersEqual(userCompared) && isUserIDEqual(userCompared) && isPasswordEqual(userCompared);
+
     }
 
 }

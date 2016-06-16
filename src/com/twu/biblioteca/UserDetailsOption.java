@@ -6,7 +6,8 @@ package com.twu.biblioteca;
 public class UserDetailsOption implements Option {
 
     @Override
-    public String executeOption(Object object) {
-        return null;
+    public String executeOption(Application application) {
+        User currentUser = application.getCurrentUser();
+        return currentUser.printUserDetails();
     }
 }

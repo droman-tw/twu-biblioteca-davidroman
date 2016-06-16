@@ -20,7 +20,7 @@ public class TestLibrary {
     private Book marquezBook;
     private Book matildaBook;
     private LinkedHashMap<Book, Availability> listBooks;
-    private HashMap<String, User> users;
+    //private HashMap<String, User> users;
 
     @Before
     public void setUp() {
@@ -32,7 +32,7 @@ public class TestLibrary {
         listBooks.put(hobbitBook, Availability.AVAILABLE);
         listBooks.put(marquezBook, Availability.AVAILABLE);
         listBooks.put(matildaBook, Availability.AVAILABLE);
-
+        /*
         PersonInfo davidInfo = new PersonInfo("David Roman", "droman@thoughtworks.com", "0939053446");
 
         User david = new User(davidInfo, "111-1111", "biblioteca1");
@@ -46,8 +46,9 @@ public class TestLibrary {
         users.put(david.getUserID(), david);
 
         users.put(larry.getUserID(), larry);
+        */
 
-        library = new Library(listBooks, users);
+        library = new Library(listBooks);
     }
 
 
@@ -160,7 +161,6 @@ public class TestLibrary {
     public void shouldReturnUnsuccessfullyBookNotInLibrary(){
         String expectedResultReturn = "That is not a valid book to return";
 
-        //Hobbit is Available by default. The return wont be possible
         String actualResultReturn = library.returnBook(new Book("Mafalda", "Guillermo Suarez", 1937));
 
         assertEquals(expectedResultReturn, actualResultReturn);
