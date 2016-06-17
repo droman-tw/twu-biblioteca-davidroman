@@ -79,7 +79,7 @@ public class AppExecutor {
         while(!(loginSucessful)) {
             System.out.println("Type User ID: ");
             String userID = scan.nextLine();
-            System.out.println("Password: ");
+            System.out.println("Tyoe Password: ");
             String password = scan.nextLine();
             loginSucessful = application.login(userID, password);
             if(loginSucessful == false){

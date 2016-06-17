@@ -21,7 +21,6 @@ public class Library {
     }
 
     public LinkedHashSet<Item> getItems(){
-
         return items;
     }
 
@@ -59,6 +58,7 @@ public class Library {
         return null;
     }
 
+
     public String checkOut(Item itemToCheckout, User user){
 
         Item itemFound = findItem(itemToCheckout);
@@ -69,6 +69,7 @@ public class Library {
         }
         return "That item is not available";
     }
+
 
     public String returnItem(Item item){
         if(!isItemAvailable(item) && isItemInLibrary(item)){
