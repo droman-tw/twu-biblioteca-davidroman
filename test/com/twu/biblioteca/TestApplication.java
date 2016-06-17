@@ -32,7 +32,7 @@ public class TestApplication {
 
     HashMap<String, User> users;
 
-    private HashMap<String, Option> options;
+    private LinkedHashMap<String, Option> options;
 
     @Before
     public void setUp() {
@@ -54,15 +54,18 @@ public class TestApplication {
         listItems.add(pulpFiction);
         listItems.add(gladiator);
 
-        options = new HashMap<String, Option>();
+        options = new LinkedHashMap<String, Option>();
 
         Option optionListBooks = new ListBooksOption();
         Option optionListMovies = new ListMoviesOption();
+        Option optionListCheckouts = new ListCheckoutsOption();
         Option optionGetUserDetails = new UserDetailsOption();
 
         options.put("List Books", optionListBooks);
         options.put("List Movies", optionListMovies);
+        options.put("List Checkouts", optionListCheckouts);
         options.put("User Details", optionGetUserDetails);
+
 
         PersonInfo davidInfo = new PersonInfo("David Roman", "droman@thoughtworks.com", "0939053446");
         david = new User(davidInfo, "111-1111", "biblioteca1");
@@ -137,7 +140,7 @@ public class TestApplication {
 
     @Test
     public void shouldPrintTheMenuOfOptions(){
-        assertEquals("List Books\nList Movies\nUser Details\n", application.viewMenu());
+        assertEquals("List Books\nList Movies\nList Checkouts\nUser Details\n", application.viewMenu());
     }
 
     @Test
@@ -226,6 +229,9 @@ public class TestApplication {
 
     @Test
     public void shouldCheckOutAnItemFromUser(){
+
+        application.login("111-1111", "biblioteca1");
+
         String expectedMessage = "Thank you! Enjoy the item!";
 
         String actualMessage = application.checkoutFromUser(hobbitBook);
@@ -239,7 +245,9 @@ public class TestApplication {
     @Test
     public void shouldReturnAnItemFromUser(){
 
-        application.getLibrary().recordCheckout(hobbitBook, david);
+        application.login("111-1111", "biblioteca1");
+
+        application.checkoutFromUser(hobbitBook);
 
         String expectedMessage = "Thank you for returning the item";
 
@@ -248,6 +256,36 @@ public class TestApplication {
         assertEquals(expectedMessage, actualMessage);
 
         assertTrue(application.getLibrary().isItemAvailable(hobbitBook));
+    }
+
+    @Test
+    public void shouldPrintListOfEmptyListOfCheckOuts(){
+
+        String expectedMessage = "Item Name, User\n";
+
+        String actualMessage = application.pickOption("List Checkouts");
+
+        assertEquals(expectedMessage, actualMessage);
+
+    }
+
+    @Test
+    public void shouldPrintListOfCheckoutItems(){
+
+        application.login("111-1111", "biblioteca1");
+        application.checkoutFromUser(hobbitBook);
+
+        application.login("222-2222", "biblioteca2");
+        application.checkoutFromUser(pulpFiction);
+
+        String expectedMessage = "Item Name, User\n" +
+                                 "Hobbit, David Roman\n" +
+                                 "Pulp Fiction, Larry Roman\n";
+
+        String actualMessage = application.pickOption("List Checkouts");
+
+        assertEquals(expectedMessage, actualMessage);
+
 
     }
 

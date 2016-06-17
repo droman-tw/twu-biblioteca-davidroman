@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 /**
@@ -9,14 +10,14 @@ import java.util.LinkedHashSet;
 public class Library {
 
     private LinkedHashSet<Item> items;
-    private HashMap<Item, User> checkoutRecords;
+    private LinkedHashMap<Item, User> checkoutRecords;
 
 
     public Library(LinkedHashSet<Item> items){
 
         this.items = items;
 
-        this.checkoutRecords = new HashMap<Item, User>();
+        this.checkoutRecords = new LinkedHashMap<Item, User>();
     }
 
     public LinkedHashSet<Item> getItems(){
@@ -24,7 +25,7 @@ public class Library {
         return items;
     }
 
-    public HashMap<Item, User> getCheckoutRecords(){
+    public LinkedHashMap<Item, User> getCheckoutRecords(){
         return checkoutRecords;
     }
 

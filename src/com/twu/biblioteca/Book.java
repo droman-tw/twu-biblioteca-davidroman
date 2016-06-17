@@ -6,9 +6,21 @@ package com.twu.biblioteca;
  */
 public class Book implements Item{
 
-    public String title;
-    public String author;
-    public int yearPublished;
+    private String title;
+    private String author;
+    private int yearPublished;
+
+    public int getYearPublished() {
+        return yearPublished;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
 
     public Book(String title, String author, int yearPublished){
         this.title = title;

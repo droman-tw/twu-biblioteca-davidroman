@@ -27,9 +27,9 @@ public class TestBook {
         String author = "Gabriel Garcia Marquez";
         int yearPublished = 1970;
         Book book = new Book(title, author, yearPublished);
-        assertEquals(title, book.title);
-        assertEquals(author, book.author);
-        assertEquals(yearPublished, book.yearPublished);
+        assertEquals(title, book.getTitle());
+        assertEquals(author, book.getAuthor());
+        assertEquals(yearPublished, book.getYearPublished());
     }
 
     @Test
