@@ -9,10 +9,14 @@ import java.util.LinkedHashMap;
 public class Library {
 
     private LinkedHashMap<Item, Availability> items;
+    //private HashMap<Item, User> checkoutRecords;
 
 
     public Library(LinkedHashMap<Item, Availability> items){
+
         this.items = items;
+
+        //this.checkoutRecords = new
     }
 
     public LinkedHashMap<Item, Availability> getItems(){
@@ -69,18 +73,18 @@ public class Library {
 
         if(isItemAvailable(itemFound)){
             changeStatus(itemToCheckout, Availability.UNAVAILABLE);
-            return "Thank you! Enjoy the book!";
+            return "Thank you! Enjoy the item!";
         }
-        return "That book is not available";
+        return "That item is not available";
     }
 
     public String returnItem(Item item){
         if(!isItemAvailable(item) && isItemInLibrary(item)){
             changeStatus(item, Availability.AVAILABLE);
-            return "Thank you for returning the book";
+            return "Thank you for returning the item";
         }
 
-        return "That is not a valid book to return";
+        return "That is not a valid item to return";
     }
 
 }

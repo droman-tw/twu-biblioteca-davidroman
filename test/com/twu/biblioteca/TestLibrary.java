@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 
 import java.util.LinkedHashMap;
 
@@ -18,7 +19,12 @@ public class TestLibrary {
     private Item hobbitBook;
     private Item marquezBook;
     private Item matildaBook;
-    private LinkedHashMap<Item, Availability> listBooks;
+
+    private Item schoolRock;
+    private Item pulpFiction;
+    private Item gladiator;
+
+    private LinkedHashMap<Item, Availability> listItems;
 
     @Before
     public void setUp() {
@@ -26,28 +32,46 @@ public class TestLibrary {
         marquezBook = new Book("Relato de un Naufrago", "Gabriel Garcia Marquez", 1970);
         matildaBook = new Book("Matilda", "Roal Dahl", 1988);
 
-        listBooks = new LinkedHashMap<Item, Availability>();
-        listBooks.put(hobbitBook, Availability.AVAILABLE);
-        listBooks.put(marquezBook, Availability.AVAILABLE);
-        listBooks.put(matildaBook, Availability.AVAILABLE);
+        schoolRock = new Movie("School of Rock", 2003, "Richard Linklater", 0);
+        pulpFiction = new Movie("Pulp Fiction", 1994, "Quentin Tarantino", 10);
+        gladiator = new Movie("Gladiator", 2000, "Ridley Scott", 8);
+
+        listItems = new LinkedHashMap<Item, Availability>();
+
+        listItems.put(hobbitBook, Availability.AVAILABLE);
+        listItems.put(marquezBook, Availability.AVAILABLE);
+        listItems.put(matildaBook, Availability.AVAILABLE);
+
+        listItems.put(schoolRock, Availability.AVAILABLE);
+        listItems.put(pulpFiction, Availability.AVAILABLE);
+        listItems.put(gladiator, Availability.AVAILABLE);
 
 
-        library = new Library(listBooks);
+
+        library = new Library(listItems);
     }
 
 
     @Test
-    public void shouldTestIfBookIsInLibrary(){
+    public void shouldTestBookIsInLibrary(){
         assertTrue(library.isItemInLibrary(hobbitBook));
     }
 
+
     @Test
-    public void shouldTestThatNullBookIsNotInLibrary(){
+    public void shouldTestThatNullItemIsNotInLibrary(){
         assertFalse(library.isItemInLibrary(null));
     }
 
+
     @Test
-    public void shouldTestNullBookIsNotAvailable(){
+    public void shouldTestBookInLibraryIsAvailable(){
+        assertTrue(library.isItemAvailable(hobbitBook));
+    }
+
+
+    @Test
+    public void shouldTestNullItemIsNotAvailable(){
         assertFalse(library.isItemAvailable(null));
     }
 
@@ -63,21 +87,25 @@ public class TestLibrary {
         assertEquals(hobbitBook, targetBook);
     }
 
+
     @Test
     public void shouldTestBookNotFound(){
         Item targetBook = library.findItem(new Book("Mafalda", "Guillermo Suarez", 1937));
         assertEquals(null, targetBook);
     }
 
+
     @Test
-    public void shouldChangeOfBookStatusToUnavailable(){
+    public void shouldChangeBookStatus(){
         library.changeStatus(hobbitBook, Availability.UNAVAILABLE);
         assertFalse(library.isItemAvailable(hobbitBook));
     }
 
+
+
     @Test
     public void shouldCheckOutBookInLibrarySuccessfully(){
-        String expectedMessage = "Thank you! Enjoy the book!";
+        String expectedMessage = "Thank you! Enjoy the item!";
         String resultOfCheckOut = library.checkOut(hobbitBook);
 
         assertEquals(expectedMessage, resultOfCheckOut);
@@ -85,16 +113,18 @@ public class TestLibrary {
         assertFalse(library.isItemAvailable(hobbitBook));
     }
 
+
     @Test
     public void shouldCheckOutBookNotInLibraryUnsuccesfully(){
-        String expectedMessage = "That book is not available";
+        String expectedMessage = "That item is not available";
         String resultOfCheckOut = library.checkOut(new Book("Mafalda", "Guillermo Suarez", 1937));
         assertEquals(expectedMessage, resultOfCheckOut);
     }
 
+
     @Test
     public void shouldCheckOutBookNotAvailableUnsucessfully(){
-        String expectedMessage = "That book is not available";
+        String expectedMessage = "That item is not available";
 
         library.changeStatus(marquezBook, Availability.UNAVAILABLE);
 
@@ -103,11 +133,12 @@ public class TestLibrary {
         assertEquals(expectedMessage, resultOfCheckOut);
     }
 
+
     @Test
-    public void shouldReturnSuccessFullyBookUnavailable(){
+    public void shouldReturnSuccessfullyBookUnavailable(){
         library.checkOut(hobbitBook);
 
-        String expectedResultReturn = "Thank you for returning the book";
+        String expectedResultReturn = "Thank you for returning the item";
 
         String actualResultReturn = library.returnItem(hobbitBook);
 
@@ -119,7 +150,7 @@ public class TestLibrary {
     @Test
     public void shouldReturnUnsuccessfullyBookAvailable(){
 
-        String expectedResultReturn = "That is not a valid book to return";
+        String expectedResultReturn = "That is not a valid item to return";
 
         String actualResultReturn = library.returnItem(hobbitBook);
 
@@ -127,14 +158,8 @@ public class TestLibrary {
     }
 
     @Test
-    public void shouldTestBookIsAvailable(){
-        assertTrue(library.isItemAvailable(hobbitBook));
-    }
-
-
-    @Test
     public void shouldReturnUnsuccessfullyNullBook(){
-        String expectedResultReturn = "That is not a valid book to return";
+        String expectedResultReturn = "That is not a valid item to return";
 
         String actualResultReturn = library.returnItem(null);
 
@@ -143,12 +168,72 @@ public class TestLibrary {
 
     @Test
     public void shouldReturnUnsuccessfullyBookNotInLibrary(){
-        String expectedResultReturn = "That is not a valid book to return";
+        String expectedResultReturn = "That is not a valid item to return";
 
         String actualResultReturn = library.returnItem(new Book("Mafalda", "Guillermo Suarez", 1937));
 
         assertEquals(expectedResultReturn, actualResultReturn);
     }
 
+    @Test
+    public void shouldTestMovieIsInLibrary(){
+        assertTrue(library.isItemInLibrary(pulpFiction));
+    }
 
+
+    @Test
+    public void shouldTestMovieInLibraryIsAvailable(){
+        assertTrue(library.isItemAvailable(schoolRock));
+    }
+
+    @Test
+    public void shouldTestMovieNotInLibraryIsNotAvailable(){
+        assertFalse(library.isItemAvailable(new Movie("The Conjuring", 2013, "James Wan", 9)));
+    }
+
+    @Test
+    public void shouldTestMovieFound(){
+        Item targetMovie = library.findItem(gladiator);
+        assertEquals(gladiator, targetMovie);
+    }
+
+    @Test
+    public void shouldTestMovieNotFound(){
+        Item targetMovie = library.findItem(new Movie("The Conjuring", 2013, "James Wan", 9));
+        assertEquals(null, targetMovie);
+    }
+
+    @Test
+    public void shouldChangeMovieStatus(){
+        library.changeStatus(pulpFiction, Availability.UNAVAILABLE);
+        assertFalse(library.isItemAvailable(pulpFiction));
+    }
+
+    @Test
+    public void shouldCheckOutMovieInLibrarySuccesfully(){
+        String expectedMessage = "Thank you! Enjoy the item!";
+        String resultOfCheckOut = library.checkOut(gladiator);
+
+        assertEquals(expectedMessage, resultOfCheckOut);
+
+        assertFalse(library.isItemAvailable(gladiator));
+    }
+
+    @Test
+    public void shouldCheckOutMovieNotInLibraryrUnsuccessfully(){
+        String expectedMessage = "That item is not available";
+        String resultOfCheckOut = library.checkOut(new Movie("The Conjuring", 2013, "James Wan", 9));
+        assertEquals(expectedMessage, resultOfCheckOut);
+    }
+
+    @Test
+    public void shouldCheckOutMovieNotAvailableUnsuccessfully(){
+        String expectedMessage = "That item is not available";
+
+        library.changeStatus(schoolRock, Availability.UNAVAILABLE);
+
+        String resultOfCheckOut = library.checkOut(schoolRock);
+
+        assertEquals(expectedMessage, resultOfCheckOut);
+    }
 }

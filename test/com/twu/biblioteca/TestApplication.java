@@ -17,13 +17,13 @@ public class TestApplication {
     private Application application;
     private Library library;
 
-    private Book hobbitBook;
-    private Book marquezBook;
-    private Book matildaBook;
+    private Item hobbitBook;
+    private Item marquezBook;
+    private Item matildaBook;
 
-    private Movie schoolRock;
-    private Movie pulpFiction;
-    private Movie gladiator;
+    private Item schoolRock;
+    private Item pulpFiction;
+    private Item gladiator;
 
     private User david;
     private User larry;
