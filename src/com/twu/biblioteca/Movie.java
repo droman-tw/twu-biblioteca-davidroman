@@ -72,6 +72,14 @@ public class Movie implements Item{
         return rating + " stars";
     }
 
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + year;
+        result = 31 * result + (director != null ? director.hashCode() : 0);
+        result = 31 * result + rating;
+        return result;
+    }
 
     @Override
     public String printDetails() {

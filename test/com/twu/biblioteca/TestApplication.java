@@ -228,7 +228,7 @@ public class TestApplication {
     }
 
     @Test
-    public void shouldCheckOutAnItemFromUser(){
+    public void shouldCheckOutABookFromUser(){
 
         application.login("111-1111", "biblioteca1");
 
@@ -239,6 +239,21 @@ public class TestApplication {
         assertEquals(expectedMessage, actualMessage);
 
         assertFalse(application.getLibrary().isItemAvailable(hobbitBook));
+
+    }
+
+    @Test
+    public void shouldCheckOutAMovieFromUser(){
+
+        application.login("111-1111", "biblioteca1");
+
+        String expectedMessage = "Thank you! Enjoy the item!";
+
+        String actualMessage = application.checkoutFromUser(pulpFiction);
+
+        assertEquals(expectedMessage, actualMessage);
+
+        assertFalse(application.getLibrary().isItemAvailable(pulpFiction));
 
     }
 
