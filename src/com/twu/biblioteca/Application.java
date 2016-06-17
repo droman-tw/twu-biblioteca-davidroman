@@ -93,6 +93,14 @@ public class Application {
         return this.currentUser;
     }
 
+    public String checkoutFromUser(Item item){
+        return library.checkOut(item, this.currentUser);
+    }
+
+    public String returnFromUser(Item item) {
+        return library.returnItem(item);
+    }
+
     /*
     public static Library setUpLibrary(LinkedHashMap<Book, Availability> listBooks){
         return new Library(listBooks);

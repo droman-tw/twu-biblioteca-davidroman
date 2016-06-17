@@ -11,7 +11,7 @@ public class ListBooksOption implements Option {
         Library library = application.getLibrary();
 
         String message = "Title, Author, Year Published\n";
-        Set<Item> items = library.getItems().keySet();
+        Set<Item> items = library.getItems();
 
         for(Item item: items){
             if(library.isItemAvailable(item) && item instanceof Book){

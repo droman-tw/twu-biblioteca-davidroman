@@ -28,7 +28,7 @@ public class TestApplication {
     private User david;
     private User larry;
 
-    private LinkedHashMap<Item, Availability> listItems;
+    private LinkedHashSet<Item> listItems;
 
     HashMap<String, User> users;
 
@@ -44,15 +44,15 @@ public class TestApplication {
         pulpFiction = new Movie("Pulp Fiction", 1994, "Quentin Tarantino", 10);
         gladiator = new Movie("Gladiator", 2000, "Ridley Scott", 8);
 
-        listItems = new LinkedHashMap<Item, Availability>();
+        listItems = new LinkedHashSet<Item>();
 
-        listItems.put(hobbitBook, Availability.AVAILABLE);
-        listItems.put(marquezBook, Availability.AVAILABLE);
-        listItems.put(matildaBook, Availability.AVAILABLE);
+        listItems.add(hobbitBook);
+        listItems.add(marquezBook);
+        listItems.add(matildaBook);
 
-        listItems.put(schoolRock, Availability.AVAILABLE);
-        listItems.put(pulpFiction, Availability.AVAILABLE);
-        listItems.put(gladiator, Availability.AVAILABLE);
+        listItems.add(schoolRock);
+        listItems.add(pulpFiction);
+        listItems.add(gladiator);
 
         options = new HashMap<String, Option>();
 
@@ -61,23 +61,17 @@ public class TestApplication {
         Option optionGetUserDetails = new UserDetailsOption();
 
         options.put("List Books", optionListBooks);
-
         options.put("List Movies", optionListMovies);
-
         options.put("User Details", optionGetUserDetails);
 
         PersonInfo davidInfo = new PersonInfo("David Roman", "droman@thoughtworks.com", "0939053446");
-
         david = new User(davidInfo, "111-1111", "biblioteca1");
 
         PersonInfo larryInfo = new PersonInfo("Larry Roman", "lroman@gmail.com", "0999353546");
-
         larry = new User(larryInfo, "222-2222", "biblioteca2");
 
         users = new HashMap<String, User>();
-
         users.put(david.getUserID(), david);
-
         users.put(larry.getUserID(), larry);
 
 
@@ -94,9 +88,9 @@ public class TestApplication {
 
     @Test
     public void shouldPrintListOfOneBook(){
-        LinkedHashMap<Item, Availability> books = new LinkedHashMap<Item, Availability>();
+        LinkedHashSet<Item> books = new LinkedHashSet<Item>();
 
-        books.put(hobbitBook, Availability.AVAILABLE);
+        books.add(hobbitBook);
 
         Library oneBook = new Library(books);
 
@@ -133,7 +127,7 @@ public class TestApplication {
                                  "Relato de un Naufrago, Gabriel Garcia Marquez, 1970\n" +
                                  "Matilda, Roal Dahl, 1988\n";
 
-        library.changeStatus(hobbitBook, Availability.UNAVAILABLE);
+        library.recordCheckout(hobbitBook, david);
 
         String actualMessage = application.pickOption("List Books");
 
@@ -201,9 +195,9 @@ public class TestApplication {
 
     @Test
     public void shouldPrintListOfOneMovie(){
-        LinkedHashMap<Item, Availability> movies = new LinkedHashMap<Item, Availability>();
+        LinkedHashSet<Item> movies = new LinkedHashSet<Item>();
 
-        movies.put(pulpFiction, Availability.AVAILABLE);
+        movies.add(pulpFiction);
 
         Library oneMovie = new Library(movies);
 
@@ -228,6 +222,32 @@ public class TestApplication {
         String actualMessage = application.pickOption("List Movies");
 
         assertEquals(expectedMesage, actualMessage);
+    }
+
+    @Test
+    public void shouldCheckOutAnItemFromUser(){
+        String expectedMessage = "Thank you! Enjoy the item!";
+
+        String actualMessage = application.checkoutFromUser(hobbitBook);
+
+        assertEquals(expectedMessage, actualMessage);
+
+        assertFalse(application.getLibrary().isItemAvailable(hobbitBook));
+
+    }
+
+    @Test
+    public void shouldReturnAnItemFromUser(){
+
+        application.getLibrary().recordCheckout(hobbitBook, david);
+
+        String expectedMessage = "Thank you for returning the item";
+
+        String actualMessage = application.returnFromUser(hobbitBook);
+
+        assertEquals(expectedMessage, actualMessage);
+
+        assertTrue(application.getLibrary().isItemAvailable(hobbitBook));
 
     }
 

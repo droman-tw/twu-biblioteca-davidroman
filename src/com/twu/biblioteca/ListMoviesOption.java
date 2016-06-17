@@ -11,7 +11,7 @@ public class ListMoviesOption implements Option {
         Library library = application.getLibrary();
 
         String message = "Name (Year), Director, Rating\n";
-        Set<Item> items = library.getItems().keySet();
+        Set<Item> items = library.getItems();
 
         for(Item item: items){
             if(library.isItemAvailable(item) && item instanceof Movie){
